@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // WhatsApp form sender
+    // WhatsApp form sender (mobile + desktop fix)
     const form = document.querySelector(".contact-form");
     if (form) {
         form.addEventListener("submit", function (e) {
@@ -32,7 +32,13 @@ document.addEventListener("DOMContentLoaded", function () {
                 `Email: ${email}%0A` +
                 `Message: ${message}`;
 
-            const url = `https://web.whatsapp.com/send?phone=${phone}&text=${text}`;
+            // Detect if user is on mobile
+            const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+            // Correct link for each device
+            const url = isMobile
+                ? `https://api.whatsapp.com/send?phone=${phone}&text=${text}` // Mobile
+                : `https://web.whatsapp.com/send?phone=${phone}&text=${text}`; // Desktop
 
             window.location.href = url;
         });
